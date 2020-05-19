@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -40,9 +41,36 @@ namespace APBD_7.Handlers
             if (credentials.Length != 2)
                 return AuthenticateResult.Fail("Incorrect authorization header value");
 
-            //TODO check credentials in DB
+            //.........................
+            //using (var con = new SqlConnection("Data Source=db-mssql;Initial Catalog=s17470;Integrated Security=True"))
+            using (var con = new SqlConnection("Data Source=XE2458613W1\\SQLEXPRESS;Initial Catalog=TestingDatabase;Integrated Security=True"))
+            using (var com = new SqlCommand())
+            {
 
-            var claims = new[]
+                com.Connection = con;
+                con.Open(); //otiweramy polaczenie
+                var tran = con.BeginTransaction(); //otwieramy nowa transakcje
+
+               
+                    com.CommandText = "SELECT IndexNumber FROM Student WHERE IndexNumber=@index"; //SQL command
+                    com.Parameters.AddWithValue("index", credentials[0]);
+                    var dr = com.ExecuteReader(); //odczytujemy efekt zapytania
+                    if (!dr.Read()) //jesli zapytanie NIC nie zwrocilo..
+                    {
+                        dr.Close();
+                        // return BadRequest("Studia nie istnieja.");  //musimy zwrocic blad
+                        return AuthenticateResult.Fail("Incorrect authorization header value");
+                    }
+                    dr.Close();
+                
+            }
+        
+
+
+
+                    //.........................
+
+                    var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, "1"),
                 new Claim(ClaimTypes.Name, "jan123"),

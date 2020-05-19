@@ -23,6 +23,7 @@ namespace APBD_7.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+   
     public class StudentsController : ControllerBase
     {
         public IConfiguration Configuration { get; set; }
@@ -32,7 +33,7 @@ namespace APBD_7.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin2")]
+        [Authorize]
         public IActionResult GetStudents()
         {
             var list = new List<Student>();
@@ -51,10 +52,13 @@ namespace APBD_7.Controllers
 
             return Ok(list);
         }
+        
 
         [HttpPost]
         public IActionResult Login(LoginRequestDto request)
         {
+
+            //..TODO sprawdzic w bazie danych czy login i haslo sa poprawne..
             var claims = new[]
 {
                 new Claim(ClaimTypes.NameIdentifier, "1"),
@@ -77,10 +81,18 @@ namespace APBD_7.Controllers
 
             return Ok(new
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
+               accessToken = new JwtSecurityTokenHandler().WriteToken(token),
                 refreshToken = Guid.NewGuid()
             });
+            
         }
 
+        [HttpPost("refresh-token/{token}")]
+        public IActionResult RefreshToken(string refToken){
+
+            //..TODO sprawdz czy refreshtoken jest w bazie, a wcześniej musieliśmy go zapisać w bazie danych
+            return Ok();
+        }
+        
     }
 }

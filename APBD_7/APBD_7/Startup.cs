@@ -31,6 +31,7 @@ namespace APBD_7
         public void ConfigureServices(IServiceCollection services)
         {
             //HTTP Basic
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -44,9 +45,10 @@ namespace APBD_7
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
                         };
                     });
-
+                    
+                    //Drugi sposob autoryzacji
             //services.AddAuthentication("AuthenticationBasic")
-            //      .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("AuthenticationBasic", null);
+               //   .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("AuthenticationBasic", null);
 
             services.AddControllers()
                     .AddXmlSerializerFormatters();
