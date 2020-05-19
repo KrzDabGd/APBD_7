@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\AuthenticationSampleWebApp",
+    "\\AuthenticationSampleWebApp\\Controllers",
+    "\\AuthenticationSampleWebApp\\DTOs",
+    "\\AuthenticationSampleWebApp\\Handlers",
+    "\\AuthenticationSampleWebApp\\Models"
+  ],
+  "SelectedNode": "\\AuthenticationSampleWebApp\\Handlers\\BasicAuthHandler.cs",
+  "PreviewInSolutionExplorer": false
+}
